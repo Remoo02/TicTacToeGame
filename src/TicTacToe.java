@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import org.w3c.dom.css.Counter;
+
 public class TicTacToe {
     public static void main(String[] args) throws Exception {
         // System.out.println("Hello, World!");
@@ -17,6 +19,7 @@ class Game {
     Player[] players = new Player[2];
     Player curPlayer;
     boolean over = false;
+    int counter = 0;
     static Scanner scan = new Scanner(System.in);
     private static int[][][] winningPositions = {
             { { 0, 0 }, { 0, 1 }, { 0, 2 } },
@@ -56,15 +59,27 @@ class Game {
                 System.out.println("This aint available, son!");
                 continue;
             }
+            counter++;
             arr[twoDvariant[0]][twoDvariant[1]] = this.curPlayer.form;
             drawGame();
+            if(checkForDraw(counter)){
+                System.out.println("No winner, kinda bad ngl");
+                over = true;
+            }
             if (checkForWin(twoDvariant)) {
                 System.out.println(this.curPlayer.name + " has won the game!!");
                 over = true;
             }
             checker = false;
+            
         }
         this.curPlayer = this.curPlayer.playerNum == 1 ? this.players[1] : this.players[0];
+        
+        
+    }
+
+    private static boolean checkForDraw(int counter) {
+        return counter == 9;
     }
 
     private static int[] oneDtoTwoD(int num) {
@@ -107,7 +122,7 @@ class Player {
 
     public Player(int playerNum) {
         this.playerNum = playerNum;
-        this.form = playerNum == 1 ? "ඞ+" : "ඉ"; // This is a so-called ternary operator, it is a shorter form
+        this.form = playerNum == 1 ? "X" : "O"; // This is a so-called ternary operator, it is a shorter form
                                                 // of a boring "if-else" Statement ☺
         System.out.println("OI NAME 4 Player" + playerNum + " PLEASE");
         this.name = Game.scan.nextLine();
